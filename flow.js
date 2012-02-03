@@ -4,20 +4,26 @@ var setupCoverList = function() {
       listWidth = 0;
 
   covers.each(function(idx, el) {
-    listWidth += $(el).width();
+    //listWidth += $(el).width();
     if (idx !== 0) {
-      skewCover(el);
+      skewCover(el, idx);
     }
   });
-  coverList.css('width', listWidth + 'px');
 },
 
-skewCover = function(el) {
+skewCover = function(el, idx) {
   var $el = $(el),
-      img = $el.children('img');
+      img = $el.children('img'),
+      newX,
+      zindex = 100;
+
+  newX = 640 + 200*(idx-1);
+  zindex -= idx;
   $el.css({ '-moz-perspective': '1200px',
             '-webkit-perspective': '1200px',
-            'perspective': '1200px' });
+            'perspective': '1200px',
+            'left': newX + 'px',
+            'z-index': zindex });
   img.css({ '-moz-transform': 'rotateY(-45deg)',
             '-webkit-transform': 'rotateY(-45deg)',
             'transform': 'rotateY(-45deg)' });

@@ -7,12 +7,26 @@ body, h1, h2, h3, h4, h5, h6, div, ul, ol, li {
   padding: 0;
 }
 
+body {
+  padding-top: 100px;
+}
+
 #coverWrapper {
   /*display: none;*/
+  position: relative;
+  height: 640px;
+}
+
+#covers {
+  min-height: 640px;
 }
 
 #covers li {
   float: left;
+  min-width: 640px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 
   /*-moz-transform: matrix(1, 0, 1, 0, 0, 0);*/
   -moz-perspective: 150px;
