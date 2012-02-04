@@ -50,7 +50,8 @@ CoverFlow = function() {
 
     setupKeyListeners: function() {
       var _this = this;
-      $('body').keypress(function(evt) {
+      // keypress only works in FF and Opera, so using keydown
+      $('html').keydown(function(evt) {
         var KEY_LEFT = 37,
             KEY_RIGHT = 39;
         if (evt.keyCode === KEY_LEFT || evt.keyCode === KEY_RIGHT) {
