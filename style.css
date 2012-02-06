@@ -20,6 +20,7 @@ li {
 }
 /* NORMAL */
 body {
+  background-color: #000;
   padding-top: 100px;
 }
 #coverWrapper {
@@ -40,11 +41,14 @@ body {
   /*-moz-transform: matrix(1, 0, 1, 0, 0, 0);*/
 
   -moz-perspective: 150px;
+  -moz-transition: left 0.3s ease-out;
+  -webkit-transition: left 0.3s ease-out;
+  transition: left 0.3s ease-out;
 }
 #covers img {
-  -moz-transition: -moz-transform 1s ease-out;
-  -webkit-transition: -webkit-transform 1s ease-out;
-  transition: transform 1s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
 }
 #covers img:hover {
   -moz-transform: rotatey(0);
