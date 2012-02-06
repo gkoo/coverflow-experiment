@@ -1,5 +1,13 @@
 /* LESS */
-.transition-transform(@duration: 1s, @easing: ease-out) {
+@animation-duration: .5s;
+
+.transition(@property, @duration: @animation-duration, @easing: ease-out) {
+  -moz-transition: @property @duration @easing;
+  -webkit-transition: @property @duration @easing;
+  transition: @property @duration @easing;
+}
+
+.transition-transform(@duration: @animation-duration, @easing: ease-out) {
   -moz-transition: -moz-transform @duration @easing;
   -webkit-transition: -webkit-transform @duration @easing;
   transition: transform @duration @easing;
@@ -17,6 +25,7 @@ body, h1, h2, h3, h4, h5, h6, div, ul, ol, li {
 
 /* NORMAL */
 body {
+  background-color: #000;
   padding-top: 100px;
 }
 
@@ -39,6 +48,7 @@ body {
 
   /*-moz-transform: matrix(1, 0, 1, 0, 0, 0);*/
   -moz-perspective: 150px;
+  .transition(left);
 }
 
 #covers img {

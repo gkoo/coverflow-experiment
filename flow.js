@@ -1,52 +1,58 @@
-var Cover = function(el, idx) {
-  var $el = $(el);
+var Cover = function(o) {
+  this.el = $(o.el).css({ '-moz-perspective': '1200px',
+                        '-webkit-perspective': '1200px',
+                        'perspective': '1200px' });
 
-  $el.css({ '-moz-perspective': '1200px',
-            '-webkit-perspective': '1200px',
-            'perspective': '1200px' });
+  this.imgEl = this.el.children('img');
 
-  return {
-    el: $(el),
+  this.idx = o.idx;
 
-    imgEl: $(el).children('img'),
+  this.angledWidth = function() {
+    return this.width/2*1.4142; /* 1.4142 == sqrt(2) */
+  };
 
-    idx: idx,
+  // direction: 1 === left stack, -1 === right stack
+  this.skew = function(direction) {
+    var newX, zindex, relativeIdx, angle=45;
 
-    skew: function(direction, selectedIdx) {
-      var newX, zindex, angle=45;
+    relativeIdx = Math.abs(this.selectedIdx - this.idx);
+    zindex = 100 - relativeIdx;
 
-      zindex = 100 - Math.abs(selectedIdx - this.idx)
-
-      if (typeof direction === 'undefined') {
-        direction = -1;
-      }
-      angle *= direction;
-      newX = 100 + 200*(this.idx);
-      zindex -= this.idx;
-
-      this.el.css({ 'left': newX + 'px',
-                    'z-index': zindex });
-      this.imgEl.css({ '-moz-transform': 'rotateY(' + angle + 'deg)',
-                                    '-webkit-transform': 'rotateY(' + angle + 'deg)',
-                                    'transform': 'rotateY(' + angle + 'deg)' });
-    },
-
-    straighten: function() {
-      this.el.css({ 'z-index': 100 });
-      this.imgEl.css({ '-moz-transform': 'none',
-                       '-webkit-transform': 'none',
-                       'transform': 'none' });
+    if (typeof direction === 'undefined') {
+      direction = -1;
     }
+
+    angle *= direction;
+    if (direction < 0) { // right stack
+      newX = this.rightStackBound - 100 + (this.angledWidth()*(relativeIdx-1));
+    }
+    else { // left stack
+      newX = this.leftStackBound - this.angledWidth() - 200*(relativeIdx-1);
+    }
+    zindex -= this.idx;
+
+    this.el.css({ 'left': newX + 'px',
+                  'z-index': zindex });
+    this.imgEl.css({ '-moz-transform': 'rotateY(' + angle + 'deg)',
+                                  '-webkit-transform': 'rotateY(' + angle + 'deg)',
+                                  'transform': 'rotateY(' + angle + 'deg)' });
+  };
+
+  this.straighten = function() {
+    this.el.css({ 'z-index': 100,
+                  'left': this.selectedLeft });
+    this.imgEl.css({ '-moz-transform': 'none',
+                     '-webkit-transform': 'none',
+                     'transform': 'none' });
   };
 },
 
 CoverFlow = function() {
   var cf = {
-    el: $('#covers'),
-
-    coverChildren: [],
-
-    selectedIdx: 0,
+    el:             $('#covers'),
+    coverChildren:  [],
+    selectedIdx:    0,
+    centerPadding:  10,
 
     setupKeyListeners: function() {
       var _this = this;
@@ -61,6 +67,7 @@ CoverFlow = function() {
       });
     },
 
+    // switch selected picture to left or right
     switchPicture: function(direction) {
       var i, len, cover, newSelectedIdx = this.selectedIdx + direction;
       if (newSelectedIdx < 0) {
@@ -69,6 +76,7 @@ CoverFlow = function() {
       else if (newSelectedIdx > this.coverChildren.length-1) {
         newSelectedIdx = this.coverChildren.length-1;
       }
+      Cover.prototype.selectedIdx = newSelectedIdx;
       if (newSelectedIdx === this.selectedIdx) {
         // reached a bound
         return;
@@ -77,12 +85,12 @@ CoverFlow = function() {
       for (i=0; i<newSelectedIdx; ++i) {
         // all the covers left of the selected cover
         cover = this.coverChildren[i];
-        cover.skew(1, newSelectedIdx);
+        cover.skew(1);
       }
       for (i=newSelectedIdx; i<this.coverChildren.length; ++i) {
         // all the covers right of the selected cover
         cover = this.coverChildren[i];
-        cover.skew(-1, newSelectedIdx);
+        cover.skew(-1);
       }
       // straighten selected
       cover = this.coverChildren[newSelectedIdx];
@@ -91,28 +99,46 @@ CoverFlow = function() {
       this.selectedIdx = newSelectedIdx;
     },
 
+    // set the value for the center "selected" cover
+    setSelectedLeft: function() {
+      var proto = Cover.prototype;
+      proto.selectedLeft = (this.windowWidth - proto.width)/2;
+      proto.rightStackBound = proto.selectedLeft + proto.width + this.centerPadding; // the left boundary of the right stack
+      proto.leftStackBound = proto.selectedLeft - this.centerPadding;
+    },
+
     init: function() {
       var coverChildren = this.el.children('.cover'),
+          coverProto = Cover.prototype,
           i, len, coverChild;
 
+      coverProto.width = 640;
+      coverProto.selectedIdx = 0;
+      this.windowWidth = $(window).width();
+      this.setSelectedLeft();
+
       for (i=0,len=coverChildren.length; i<len; ++i) {
-        coverChild = new Cover(coverChildren[i], i);
+        coverChild = new Cover({ el: coverChildren[i],
+                                 idx: i });
         this.coverChildren.push(coverChild);
-        coverChild.skew();
+        if (i === 0) {
+          // initialize first item to be center
+          coverChild.straighten();
+        }
+        else {
+          coverChild.skew();
+        }
       }
+
+      this.setupKeyListeners();
 
       return this;
     }
   };
 
   return cf.init();
-},
-
-init = function() {
-  var cf = new CoverFlow();
-  cf.setupKeyListeners();
 };
 
 $(function() {
-  init();
+  var cf = new CoverFlow();
 });
