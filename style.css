@@ -21,20 +21,24 @@ li {
 /* NORMAL */
 body {
   background-color: #000;
-  padding-top: 100px;
+  overflow: hidden;
+  text-align: center;
 }
-#coverWrapper {
+#coverflow-container {
   /*display: none;*/
 
+  margin: 0 auto;
+  width: 100%;
+  /*overflow: hidden;*/
+
+}
+#coverflow-covers {
+  margin: 0 auto;
   position: relative;
-  height: 640px;
+  width: 100%;
 }
-#covers {
-  min-height: 640px;
-}
-#covers li {
+#coverflow-covers li {
   float: left;
-  min-width: 640px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -45,11 +49,9 @@ body {
   -webkit-transition: left 0.3s ease-out;
   transition: left 0.3s ease-out;
 }
-#covers img {
+#coverflow-covers img {
   -moz-transition: -moz-transform 0.3s ease-out;
   -webkit-transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
-}
-#covers img:hover {
-  -moz-transform: rotatey(0);
+  -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(#ffffff));
 }

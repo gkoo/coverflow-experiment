@@ -26,22 +26,25 @@ body, h1, h2, h3, h4, h5, h6, div, ul, ol, li {
 /* NORMAL */
 body {
   background-color: #000;
-  padding-top: 100px;
+  overflow: hidden;
+  text-align: center;
 }
 
-#coverWrapper {
+#coverflow-container {
   /*display: none;*/
+  margin: 0 auto;
+  width: 100%;
+  /*overflow: hidden;*/
+}
+
+#coverflow-covers {
+  margin: 0 auto;
   position: relative;
-  height: 640px;
+  width: 100%;
 }
 
-#covers {
-  min-height: 640px;
-}
-
-#covers li {
+#coverflow-covers li {
   float: left;
-  min-width: 640px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -51,10 +54,7 @@ body {
   .transition(left);
 }
 
-#covers img {
+#coverflow-covers img {
   .transition-transform;
-}
-
-#covers img:hover {
-  -moz-transform: rotateY(0);
+  -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white));
 }
