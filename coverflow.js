@@ -8,13 +8,14 @@ var CoverFlow = function(opt) {
     this.childEl = this.el.children().css('width', this.width);
 
     this.idx = o.idx;
+    this.height = this.el.height(); // cache height for shrinking/unshrinking
 
     this.angledWidth = function() {
       return this.width/2*1.4142; /* 1.4142 == sqrt(2) */
     };
 
     this.rotateY = function(y) {
-      // For some reason, setting transform to 0 resets the box-reflect property,
+      // Setting transform to 0 resets the box-reflect property,
       // so we'll just have to set it very time.
       this.childEl.css({ '-moz-transform': 'rotateY(' + y + 'deg)',
                          //'-o-transform': 'rotateY(' + y + 'deg)',
@@ -46,14 +47,16 @@ var CoverFlow = function(opt) {
 
       this.el.css({ 'left': Math.floor(newX) + 'px',
                     'z-index': zindex });
-      this.childEl.css({ 'width': this.width*3/4 });
+      this.childEl.css({ 'width': this.width*3/4 + 'px',
+                         'height': this.height*3/4 + 'px' });
       this.rotateY(angle);
     };
 
     this.straighten = function() {
       this.el.css({ 'z-index': 100,
                     'left': this.selectedLeft });
-      this.childEl.css({ 'width': this.width });
+      this.childEl.css({ 'width': this.width + 'px',
+                         'height': this.height + 'px' });
       this.rotateY(0);
     };
   },
@@ -151,7 +154,6 @@ var CoverFlow = function(opt) {
       }
       this.width = opt.width ? opt.width : '100%';
       elCss.width = this.width;
-      console.log(elCss);
       this.el.css(elCss);
 
       coverProto.paddingBottom = opt.paddingBottom ? opt.paddingBottom + 'px' : 0;
