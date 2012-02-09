@@ -1,9 +1,10 @@
 var Cover = function(o) {
-  this.el = $(o.el).css({ '-moz-perspective': '1200px',
-                        '-webkit-perspective': '1200px',
-                        'perspective': '1200px' });
+  this.el = $(o.el).css({ 'bottom': this.paddingBottom,
+                          '-moz-perspective': '1200px',
+                          '-webkit-perspective': '1200px',
+                          'perspective': '1200px' });
 
-  this.imgEl = this.el.children('img').css('width', this.width);
+  this.childEl = this.el.children().css('width', this.width);
 
   this.idx = o.idx;
 
@@ -14,7 +15,7 @@ var Cover = function(o) {
   this.rotateY = function(y) {
     // For some reason, setting transform to 0 resets the box-reflect property,
     // so we'll just have to set it very time.
-    this.imgEl.css({ '-moz-transform': 'rotateY(' + y + 'deg)',
+    this.childEl.css({ '-moz-transform': 'rotateY(' + y + 'deg)',
                      '-webkit-transform': 'rotateY(' + y + 'deg)',
                      'transform': 'rotateY(' + y + 'deg)',
                      '-webkit-box-reflect': 'below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white))' });
@@ -128,21 +129,27 @@ CoverFlow = function(opt) {
     },
 
     init: function() {
-      var coverChildren = this.el.children('.cover'),
+      var coverChildren = this.el.children('.coverflow-cover'),
           coverProto = Cover.prototype,
           container = this.el.parent(),
+          elCss = {},
           i, len, coverChild;
 
+      // ==============
+      // MODULE OPTIONS
+      // ==============
       if (opt.minHeight) {
-        this.el.css('min-height', opt.minHeight);
+        elCss['minHeight'] = opt.minHeight;
       }
-      if (opt.width) {
-        this.width = opt.width;
-        this.el.css('width', opt.width);
+      if (opt.bgColor) {
+        elCss['background-color'] = opt.bgColor;
       }
-      else {
-        this.el.css('width', '100%');
-      }
+      this.width = opt.width ? opt.width : '100%';
+      elCss.width = this.width;
+      console.log(elCss);
+      this.el.css(elCss);
+
+      coverProto.paddingBottom = opt.paddingBottom ? opt.paddingBottom + 'px' : 0;
       coverProto.width = opt.coverWidth;
       coverProto.selectedIdx = typeof opt.selectedIdx !== 'undefined' ? opt.selectedIdx: 0;
 
@@ -163,12 +170,3 @@ CoverFlow = function(opt) {
 
   return cf.init();
 };
-
-$(function() {
-  var cf = new CoverFlow({
-    coverWidth:  640,
-    //width: 900,
-    minHeight:   680,
-    selectedIdx: 2
-  });
-});

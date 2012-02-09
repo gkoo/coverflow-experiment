@@ -20,8 +20,7 @@ li {
 }
 /* NORMAL */
 body {
-  background-color: #000;
-  overflow: hidden;
+  background-color: #fff;
   text-align: center;
 }
 #coverflow-container {
@@ -34,6 +33,7 @@ body {
 }
 #coverflow-covers {
   margin: 0 auto;
+  overflow: hidden;
   position: relative;
   width: 100%;
 }
@@ -49,7 +49,7 @@ body {
   -webkit-transition: left 0.3s ease-out;
   transition: left 0.3s ease-out;
 }
-#coverflow-covers img {
+.coverflow-cover > * {
   -moz-transition: -moz-transform 0.3s ease-out;
   -webkit-transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
