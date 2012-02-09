@@ -1,15 +1,29 @@
 /* LESS */
 @animation-duration: .3s;
+@default-easing: ease-out;
 
 .transition(@property, @duration: @animation-duration, @easing: ease-out) {
-  -moz-transition: @property @duration @easing;
-  -webkit-transition: @property @duration @easing;
-  transition: @property @duration @easing;
+  -moz-transition-property: @property;
+  -moz-transition-duration: @duration;
+  -moz-transition-timing-function: @easing;
+
+  -o-transition-property: @property;
+  -o-transition-duration: @duration;
+  -o-transition-timing-function: @easing;
+
+  -webkit-transition-property: @property;
+  -webkit-transition-duration: @duration;
+  -webkit-transition-timing-function: @easing;
+
+  transition-property: @property;
+  transition-duration: @duration;
+  transition-timing-function: @easing;
 }
 
 .transition-transform(@duration: @animation-duration, @easing: ease-out) {
   -moz-transition: -moz-transform @duration @easing;
   -webkit-transition: -webkit-transform @duration @easing;
+  /*-o-transition: -o-transform @duration @easing;*/
   transition: transform @duration @easing;
 }
 
@@ -29,13 +43,6 @@ body {
   text-align: center;
 }
 
-#coverflow-container {
-  /*display: none;*/
-  margin: 0 auto;
-  width: 100%;
-  /*overflow: hidden;*/
-}
-
 #coverflow-covers {
   margin: 0 auto;
   overflow: hidden;
@@ -49,12 +56,27 @@ body {
   bottom: 0;
   left: 0;
 
-  /*-moz-transform: matrix(1, 0, 1, 0, 0, 0);*/
-  -moz-perspective: 150px;
   .transition(left);
 }
 
 .coverflow-cover > * {
-  .transition-transform;
+  -moz-transition-property: width, -moz-transform;
+  -moz-transition-duration: @animation-duration;
+  -moz-transition-timing-function: @default-easing;
+
+  /*
+  -o-transition-property: width, -o-transform;
+  -o-transition-duration: @animation-duration;
+  -o-transition-timing-function: @default-easing;
+  */
+
+  -webkit-transition-property: width, -webkit-transform;
+  -webkit-transition-duration: @animation-duration;
+  -webkit-transition-timing-function: @default-easing;
+
+  transition-property: width, transform;
+  transition-duration: @animation-duration;
+  transition-timing-function: @default-easing;
+
   -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white));
 }

@@ -23,14 +23,6 @@ body {
   background-color: #fff;
   text-align: center;
 }
-#coverflow-container {
-  /*display: none;*/
-
-  margin: 0 auto;
-  width: 100%;
-  /*overflow: hidden;*/
-
-}
 #coverflow-covers {
   margin: 0 auto;
   overflow: hidden;
@@ -42,16 +34,34 @@ body {
   position: absolute;
   bottom: 0;
   left: 0;
-  /*-moz-transform: matrix(1, 0, 1, 0, 0, 0);*/
-
-  -moz-perspective: 150px;
-  -moz-transition: left 0.3s ease-out;
-  -webkit-transition: left 0.3s ease-out;
-  transition: left 0.3s ease-out;
+  -moz-transition-property: left;
+  -moz-transition-duration: 0.3s;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-property: left;
+  -o-transition-duration: 0.3s;
+  -o-transition-timing-function: ease-out;
+  -webkit-transition-property: left;
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-property: left;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
 }
 .coverflow-cover > * {
-  -moz-transition: -moz-transform 0.3s ease-out;
-  -webkit-transition: -webkit-transform 0.3s ease-out;
-  transition: transform 0.3s ease-out;
+  -moz-transition-property: width, -moz-transform;
+  -moz-transition-duration: 0.3s;
+  -moz-transition-timing-function: ease-out;
+  /*
+  -o-transition-property: width, -o-transform;
+  -o-transition-duration: @animation-duration;
+  -o-transition-timing-function: @default-easing;
+  */
+
+  -webkit-transition-property: width, -webkit-transform;
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-property: width, transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
   -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(#ffffff));
 }
