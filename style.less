@@ -60,21 +60,21 @@ body {
 }
 
 .coverflow-cover > * {
-  -moz-transition-property: width, height, -moz-transform;
+  -moz-transition-property: width, -moz-transform;
   -moz-transition-duration: @animation-duration;
   -moz-transition-timing-function: @default-easing;
 
   /*
-  -o-transition-property: width, height, -o-transform;
+  -o-transition-property: width, -o-transform;
   -o-transition-duration: @animation-duration;
   -o-transition-timing-function: @default-easing;
   */
 
-  -webkit-transition-property: width, height, -webkit-transform;
+  -webkit-transition-property: width, -webkit-transform;
   -webkit-transition-duration: @animation-duration;
   -webkit-transition-timing-function: @default-easing;
 
-  transition-property: width, height, transform;
+  transition-property: width, transform;
   transition-duration: @animation-duration;
   transition-timing-function: @default-easing;
 

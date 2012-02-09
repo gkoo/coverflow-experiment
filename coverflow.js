@@ -8,10 +8,10 @@ var CoverFlow = function(opt) {
     this.childEl = this.el.children().css('width', this.width);
 
     this.idx = o.idx;
-    this.height = this.el.height(); // cache height for shrinking/unshrinking
+    //this.height = this.el.height(); // cache height for shrinking/unshrinking
 
     this.angledWidth = function() {
-      return this.width/2*1.4142; /* 1.4142 == sqrt(2) */
+      return this.width*3/4/2*Math.sqrt(2);
     };
 
     this.rotateY = function(y) {
@@ -47,16 +47,16 @@ var CoverFlow = function(opt) {
 
       this.el.css({ 'left': Math.floor(newX) + 'px',
                     'z-index': zindex });
-      this.childEl.css({ 'width': this.width*3/4 + 'px',
-                         'height': this.height*3/4 + 'px' });
+      this.childEl.css({ 'width': this.width*3/4 + 'px' });
+                         //'height': this.height*3/4 + 'px' });
       this.rotateY(angle);
     };
 
     this.straighten = function() {
       this.el.css({ 'z-index': 100,
                     'left': this.selectedLeft });
-      this.childEl.css({ 'width': this.width + 'px',
-                         'height': this.height + 'px' });
+      this.childEl.css({ 'width': this.width + 'px' });
+                         //'height': this.height + 'px' });
       this.rotateY(0);
     };
   },
@@ -69,30 +69,26 @@ var CoverFlow = function(opt) {
 
     // Handler for window resize
     resizeCoverFlow: function() {
-      var _this = this;
-
       if (!this.resizing && this.el.width() !== this.width) {
         this.setSelectedLeft();
         this.switchPicture(0);
         this.resizing = 1;
-        setTimeout(function() {
-          _this.resizing = 0;
-        }, 100);
+        setTimeout((function() {
+          this.resizing = 0;
+        }).bind(this), 100);
       }
     },
 
     setupEvents: function() {
-      var _this = this;
-
       // keypress only works in FF and Opera, so using keydown
-      $('html').keydown(function(evt) {
+      $('html').keydown((function(evt) {
         var KEY_LEFT = 37,
             KEY_RIGHT = 39;
         if (evt.keyCode === KEY_LEFT || evt.keyCode === KEY_RIGHT) {
-          _this.switchPicture(evt.keyCode - 38);
+          this.switchPicture(evt.keyCode - 38);
           evt.preventDefault();
         }
-      });
+      }).bind(this));
 
       if (!this.width) {
         $(window).resize(this.resizeCoverFlow.bind(this));
@@ -167,8 +163,8 @@ var CoverFlow = function(opt) {
                                  idx: i });
         this.coverChildren.push(coverChild);
       }
-      this.switchPicture(0); // do the initial rendering of coverflow
 
+      this.switchPicture(0); // do the initial rendering of coverflow
       this.setupEvents();
 
       return this;
