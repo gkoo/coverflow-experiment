@@ -1,3 +1,4 @@
+// TODO: degrade more gracefully when there are no 3d transforms
 var CoverFlow = function(opt) {
   var Cover = function(o) {
     this.el = $(o.el).css({ 'bottom': this.paddingBottom,
@@ -17,11 +18,16 @@ var CoverFlow = function(opt) {
     this.rotateY = function(y) {
       // Setting transform to 0 resets the box-reflect property,
       // so we'll just have to set it very time.
-      this.childEl.css({ '-moz-transform': 'rotateY(' + y + 'deg)',
+      var css = { '-moz-transform': 'rotateY(' + y + 'deg)',
                          //'-o-transform': 'rotateY(' + y + 'deg)',
                          '-webkit-transform': 'rotateY(' + y + 'deg)',
-                         'transform': 'rotateY(' + y + 'deg)',
-                         '-webkit-box-reflect': 'below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white))' });
+                         'transform': 'rotateY(' + y + 'deg)' };
+      if (this.reflect) {
+        console.log(this.reflect);
+        css['-webkit-box-reflect'] = 'below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), to(white))';
+      }
+
+      this.childEl.css(css);
     };
 
     // direction: 1 === left stack, -1 === right stack
@@ -139,6 +145,14 @@ var CoverFlow = function(opt) {
           elCss = {},
           i, len, coverChild;
 
+      // Check for 3d transform support.
+      if (typeof document.body.style.MozPerspective === 'undefined' &&
+          typeof document.body.style.webkitPerspective === 'undefined') {
+        // No support for 3d transforms.
+        alert('Sorry, your browser doesn\'t support 3D transforms! Please use Chrome 12+ or Firefox 10+. Sorry again...');
+        return false;
+      }
+
       // ==============
       // MODULE OPTIONS
       // ==============
@@ -152,9 +166,10 @@ var CoverFlow = function(opt) {
       elCss.width = this.width;
       this.el.css(elCss);
 
-      coverProto.paddingBottom = opt.paddingBottom ? opt.paddingBottom + 'px' : 0;
-      coverProto.width = opt.coverWidth;
-      coverProto.selectedIdx = typeof opt.selectedIdx !== 'undefined' ? opt.selectedIdx: 0;
+      coverProto.paddingBottom  = opt.paddingBottom ? opt.paddingBottom + 'px' : 0;
+      coverProto.width          = opt.coverWidth;
+      coverProto.reflect        = opt.reflect;
+      coverProto.selectedIdx    = typeof opt.selectedIdx !== 'undefined' ? opt.selectedIdx: 0;
 
       this.setSelectedLeft();
 
