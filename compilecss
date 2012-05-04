@@ -1,0 +1,3 @@
+#!/bin/bash
+
+lessc -x coverflow.less > coverflow.css

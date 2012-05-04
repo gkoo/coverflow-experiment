@@ -1,1 +1,49 @@
-My GitHub Page
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coverflow Experiment</title>
+  <link rel="stylesheet/less" type="text/css" href="coverflow.less"></link>
+  <script type="text/javascript" src="less-1.2.1.min.js"></script>
+  <!--
+  <link rel="stylesheet" type="text/css" href="coverflow.css"></link>
+  -->
+</head>
+
+<body>
+  <p style="font-size: 24px; color: #fff">Use the left and right arrows to do stuff.</p>
+  <ul id="coverflow-covers">
+    <li class="coverflow-cover"><img src="flickr/1.jpg"/></li>
+    <li class="coverflow-cover"><img src="flickr/2.jpg"/></li>
+    <li class="coverflow-cover"><img src="flickr/3.jpg"/></li>
+    <li class="coverflow-cover"><img src="flickr/4.jpg"/></li>
+    <li class="coverflow-cover"><img src="flickr/5.jpg"/></li>
+    <li class="coverflow-cover">
+      <div style="background-color: #fff; width: 200px; height: 600px;">
+        <h1 style="font-size: 48px;">Hi it's Gordon!</h1>
+        <input type="text"></input>
+        <input name="isitreally" type="radio" checked="checked"></input> Yup!
+        <input name="isitreally" type="radio"></input> Nope!
+        <input name="isitreally" type="radio"></input> Maybe.
+        <textarea>This is a textarea.</textarea>
+    </li>
+  </ul>
+  <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="coverflow.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      // Available options:
+      // minHeight, width, coverWidth, selectedIdx, bgColor, paddingBottom
+      var cf = new CoverFlow({
+        coverWidth:         640,
+        //width:              1200,
+        minHeight:          720,
+        paddingBottom:      50,
+        reflect:            false,
+        //selectedIdx:        4,
+        bgColor:            '#000'
+      });
+    });
+  </script>
+</body>
+
+</html>
